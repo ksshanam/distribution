@@ -19,6 +19,9 @@ func Test(t *testing.T) { TestingT(t) }
 var configStruct = Configuration{
 	Version: "0.1",
 	Log: struct {
+		AccessLog struct {
+			Disabled bool `yaml:"disabled,omitempty"`
+		} `yaml:"accesslog,omitempty"`
 		Level     Loglevel               `yaml:"level"`
 		Formatter string                 `yaml:"formatter,omitempty"`
 		Fields    map[string]interface{} `yaml:"fields,omitempty"`
@@ -59,6 +62,7 @@ var configStruct = Configuration{
 				Headers: http.Header{
 					"Authorization": []string{"Bearer <example>"},
 				},
+				IgnoredMediaTypes: []string{"application/octet-stream"},
 			},
 		},
 	},
@@ -136,6 +140,8 @@ notifications:
       url:  http://example.com
       headers:
         Authorization: [Bearer <example>]
+      ignoredmediatypes:
+        - application/octet-stream
 reporting:
   bugsnag:
     apikey: BugsnagApiKey
@@ -162,6 +168,8 @@ notifications:
       url:  http://example.com
       headers:
         Authorization: [Bearer <example>]
+      ignoredmediatypes:
+        - application/octet-stream
 http:
   headers:
     X-Content-Type-Options: [nosniff]
